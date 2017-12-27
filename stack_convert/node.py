@@ -11,11 +11,9 @@ class Node:
 
    if (frames and len(frames) > 0):
      head = frames[0]
-     child = self.children[head] ?
-             self.children[head] :
-             None
+     child = self.children[head] if self.children[head] else None
      if (child is None):
-       child = new Node(head)
+       child = Node(head)
        self.children[head] = child
      frames[0:1] = []
      child.add(frames, value)
