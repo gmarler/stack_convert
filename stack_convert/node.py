@@ -1,5 +1,7 @@
 class Node:
-  def __init__(self, name, value=0, children={}):
+  def __init__(self, name, value=0, children=None):
+    if children is None:
+      children = {}
     self.name = name
     self.value = value
     self.children = children

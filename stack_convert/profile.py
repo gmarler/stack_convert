@@ -2,7 +2,9 @@ from .node import Node
 
 
 class Profile:
-  def __init__(self, samples=Node('root'), stack=[]):
+  def __init__(self, samples=Node('root'), stack=None):
+    if stack is None:
+      stack = []
     self.samples = samples
     self.stack = stack
     self.stack_is_open = 0
