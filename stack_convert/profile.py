@@ -23,8 +23,8 @@ class Profile:
     self.stack.insert(0, self.name)
     self.samples.add(self.stack, value)
 
-    self.stack([])
-    self.name(None)
-    self.stack_is_open(False)
+    self.stack = []
+    self.name = None
+    self.stack_is_open = False
 
 

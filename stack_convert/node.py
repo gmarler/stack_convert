@@ -3,15 +3,15 @@ class Node:
     if children is None:
       children = {}
     self.name = name
-    self.value = value
+    self.value = int(value)
     self.children = children
 
   def add(self, frames, value):
-    self.value += value
+    self.value += int(value)
 
     if (frames and len(frames) > 0):
       head = frames[0]
-      child = self.children[head] if self.children[head] else None
+      child = self.children[head] if (self.children and self.children[head]) else None
       if (child is None):
         child = Node(head)
         self.children[head] = child

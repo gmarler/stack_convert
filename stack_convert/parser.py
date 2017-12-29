@@ -21,8 +21,8 @@ class Parser:
 
       m = re.search(r"^\s*(\d+)$", line)
       if m:
-        count = m[0]
-        if (profile.stack_is_open):
+        count = m.group(1)
+        if (self.profile.stack_is_open):
           self.profile.closeStack(count)
         else:
           print("ERROR: %s", line)
