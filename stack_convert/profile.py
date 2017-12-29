@@ -7,11 +7,11 @@ class Profile:
       stack = []
     self.samples = samples
     self.stack = stack
-    self.stack_is_open = 0
+    self.stack_is_open = False
     self.name = None
 
   def openStack(self, name):
-    self.stack_is_open = 1
+    self.stack_is_open = True
     self.name = name
 
   def addFrame(self, func, mod):
@@ -25,6 +25,6 @@ class Profile:
 
     self.stack([])
     self.name(None)
-    self.stack_is_open(0)
+    self.stack_is_open(False)
 
 

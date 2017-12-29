@@ -6,6 +6,7 @@ class Parser:
     self.profile = None
 
   def parseDTrace(self, filename):
+    print("Opening [%s] for parsing", filename)
     fh = open(filename, "r")
 
     self.profile = Profile()
@@ -41,15 +42,15 @@ class Parser:
 
       if not re.search(r"^(\S+)`(\S+)$", frame):
         print("UNKNOWN LINE: %s", frame)
-        contine
+        continue
 
-      if (profile.stack_is_open()):
+      if (self.profile.stack_is_open):
         print("Sending to profile addFrame with: (%s, None)", frame)
-        profile.addFrame(frame, None)
+        self.profile.addFrame(frame, None)
       else:
-        profile.openStack('kernel')
+        self.profile.openStack('kernel')
         print("Sending to profile addFrame with: (%s, None)", frame)
-        profile.addFrame(frame, None)
+        self.profile.addFrame(frame, None)
 
     return self.profile
 
