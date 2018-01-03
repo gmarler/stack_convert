@@ -27,6 +27,6 @@ class Node:
       children.append(self.children[key].serialize())
 
     if (len(children) > 0):
-      res.children = children
+      res['children'] = children
 
     return res

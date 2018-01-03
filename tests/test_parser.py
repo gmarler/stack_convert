@@ -19,3 +19,6 @@ def test_simple_DTrace_parse(datafiles):
   for datafile in datafiles.listdir():
    profile = parser.parseDTrace(str(datafile))
    print(profile)
+   parser.serializeProfile()
+   json_data = parser.encodeAsJSON()
+   print(json_data)

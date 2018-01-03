@@ -41,25 +41,26 @@ class Parser:
         frame = "-"
 
       if not re.search(r"^(\S+)`(\S+)$", frame):
-        print("UNKNOWN LINE: %s", frame)
+        # print("UNKNOWN LINE: %s", frame)
         continue
 
       if (self.profile.stack_is_open):
-        print("Sending to profile addFrame with: (%s, None)", frame)
+        print("Sending to profile addFrame with: ", frame)
         self.profile.addFrame(frame, None)
       else:
         self.profile.openStack('kernel')
-        print("Sending to profile addFrame with: (%s, None)", frame)
+        print("Transition from User => Kernel stack with addFrame of: ", frame)
         self.profile.addFrame(frame, None)
 
     return self.profile
 
   def serializeProfile(self):
     """Serialize Profile Samples"""
-    return self.profile.samples.serialize()
+    self.serialized = self.profile.samples.serialize()
+    return self.serialized
 
-  def encodeAsJSON(self, serializedProfile=None):
+  def encodeAsJSON(self):
     """Encode a Serialized Profile as JSON"""
     import json
-    encoded = json.dumps(serializedProfile)
+    encoded = json.dumps(self.serialized)
     return encoded
