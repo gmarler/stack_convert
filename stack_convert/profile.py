@@ -22,7 +22,7 @@ class Profile:
     self.stack.insert(0, func)
 
   def closeStack(self, value):
-    self.stack.insert(0, self.name)
+    # self.stack.insert(0, self.name)
     self.samples.add(self.stack, value)
 
     self.stack = []

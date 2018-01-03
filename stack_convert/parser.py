@@ -50,6 +50,8 @@ class Parser:
       else:
         # argument to openStack is the name of the top Node
         self.profile.openStack('root')
+        # ... and insert the first frame
+        self.profile.addFrame(frame, None)
 
     return self.profile
 
