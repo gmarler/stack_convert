@@ -48,9 +48,8 @@ class Parser:
         print("Sending to profile addFrame with: ", frame)
         self.profile.addFrame(frame, None)
       else:
-        self.profile.openStack('kernel')
-        print("Transition from User => Kernel stack with addFrame of: ", frame)
-        self.profile.addFrame(frame, None)
+        # argument to openStack is the name of the top Node
+        self.profile.openStack('root')
 
     return self.profile
 
