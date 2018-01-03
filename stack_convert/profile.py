@@ -5,7 +5,8 @@ class Profile:
   def __init__(self, samples=None, stack=None):
     if stack is None:
       stack = []
-    self.samples = samples
+    if samples is None:
+      self.samples = Node('root')
     self.stack = stack
     self.stack_is_open = False
     self.name = None
@@ -13,7 +14,6 @@ class Profile:
   def openStack(self, name):
     """name: the name of the top level Node in the profile"""
     self.stack_is_open = True
-    self.samples = Node(name)
     self.name = name
 
   def addFrame(self, func, mod):
