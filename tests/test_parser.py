@@ -9,16 +9,28 @@ FIXTURE_DIR = os.path.join(
   'test_data',
 )
 
+@pytest.fixture()
+def kernel_stack_simple_json():
+  return r'{"children": [{"children": [{"children": [{"children": [{"name": "unix`mach_cpu_idle", "value": 19199}], "name": "unix`cpu_idle", "value": 19199}], "name": "unix`idle", "value": 19199}], "name": "unix`thread_start", "value": 19199}], "name": "root", "value": 19199}'
+
 @pytest.mark.datafiles(
   os.path.join(FIXTURE_DIR, 'kernel-stack-simple.raw')
 )
-def test_simple_DTrace_parse(datafiles):
+def test_simple_DTrace_parse(datafiles,kernel_stack_simple_json):
   path = str(datafiles)
   assert(datafiles / 'kernel-stack-simple.raw').check(file=1)
   parser = Parser()
   for datafile in datafiles.listdir():
    profile = parser.parseDTrace(str(datafile))
-   print(profile)
+   #print(profile)
    parser.serializeProfile()
    json_data = parser.encodeAsJSON()
-   print(json_data)
+   assert json_data == kernel_stack_simple_json
+   #print(json_data)
+   # TODO: Convert back to a data structure and compare again
+   # import json
+   # json_string = str(kernel_stack_simple_json)
+   # print(json_string)
+   # expected_data = json.JSONDecoder.decode(json_string)
+   # actual_data = json.JSONDecoder.decode(json_data)
+   # assert actual_data == expected_data

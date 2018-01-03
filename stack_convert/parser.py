@@ -45,7 +45,7 @@ class Parser:
         continue
 
       if (self.profile.stack_is_open):
-        print("Sending to profile addFrame with: ", frame)
+        #print("Sending to profile addFrame with: ", frame)
         self.profile.addFrame(frame, None)
       else:
         # argument to openStack is the name of the top Node
@@ -63,5 +63,5 @@ class Parser:
   def encodeAsJSON(self):
     """Encode a Serialized Profile as JSON"""
     import json
-    encoded = json.dumps(self.serialized)
+    encoded = json.dumps(self.serialized,sort_keys=True)
     return encoded
