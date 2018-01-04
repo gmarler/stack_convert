@@ -1,8 +1,10 @@
 from .node import Node
+import logging
 
 
 class Profile:
   def __init__(self, samples=None, stack=None):
+    self.logger = logging.getLogger(self.__class__.__qualname__)
     if stack is None:
       stack = []
     if samples is None:

@@ -1,12 +1,14 @@
 from .profile import Profile
 import re
+import logging
 
 class Parser:
   def __init__(self):
+    self.logger = logging.getLogger(self.__class__.__qualname__)
     self.profile = None
 
   def parseDTrace(self, filename):
-    print("Opening [%s] for parsing", filename)
+    self.logger.debug("Opening [{0}] for parsing".format(filename))
     fh = open(filename, "r")
 
     # Open a new profile to contain everything in this file
@@ -44,7 +46,7 @@ class Parser:
         execm = re.search(r"^\s+?(\w+)$", line)
         if execm:
           execname = execm.group(1)
-          print("OPENING STACK FOR EXECNAME: %s" % execname)
+          self.logger.debug("OPENING STACK FOR EXECNAME: %s" % execname)
           self.profile.openStack(execname)
           # No frame to add yet - the next line should be the first frame
           continue
@@ -55,9 +57,9 @@ class Parser:
         if frame is not None:
           # Make sure this is a recognizable frame
           if not re.search(r"^(\S+)`(\S+)$", frame):
-            print("UNKNOWN LINE BETWEEN STACKS: %s", frame)
+            self.logger.warn("UNKNOWN LINE BETWEEN STACKS: %s", frame)
             continue
-          print("OPENING STACK FOR PLAIN FRAME: %s" % frame)
+            self.logger.debug("OPENING STACK FOR PLAIN FRAME: %s" % frame)
           self.profile.openStack(frame)
           # ... and insert that first frame
           self.profile.addFrame(frame, None)
@@ -71,7 +73,7 @@ class Parser:
         if frame is not None:
           # Make sure this is a recognizable frame
           if not re.search(r"^(\S+)`(\S+)$", frame):
-            print("UNKNOWN LINE IN OPEN STACK: %s", frame)
+            self.logger.warn("UNKNOWN LINE IN OPEN STACK: %s", frame)
             continue
           self.profile.addFrame(frame, None)
           continue
@@ -84,7 +86,7 @@ class Parser:
         # 2c. Detect the gap between a kernel/user stack, which we'll add as an '-' frame
         gapm = re.search(r"^\s+?$", line)
         if gapm:
-          print("GAP FRAME BETWEEN KERNEL/USER STACKS")
+          self.logger.debug("GAP FRAME BETWEEN KERNEL/USER STACKS")
           self.profile.addFrame('-', None)
 
     return self.profile

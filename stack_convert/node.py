@@ -1,5 +1,8 @@
+import logging
+
 class Node:
   def __init__(self, name, value=0, children=None):
+    self.logger = logging.getLogger(self.__class__.__qualname__)
     if children is None:
       children = {}
     self.name = name
