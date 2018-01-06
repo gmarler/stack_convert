@@ -12,6 +12,6 @@ setup(
     packages=find_packages(where='stack_convert'),
     package_dir={'': 'stack_convert'},
 
-    install_requires=['pytest', 'pytest-mock', 'pytest-datafiles'],
-    tests_require=['pytest', 'pytest-mock', 'pytest-datafiles'],
+    install_requires=['pytest', 'pytest-mock', 'pytest-datafiles', 'pyaml'],
+    tests_require=['pytest', 'pytest-mock', 'pytest-datafiles', 'pyaml'],
 )
