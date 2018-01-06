@@ -29,6 +29,7 @@ class LoggingConfig:
     pass
     # logging.shutdown()
 
+
 class ApplicationConfig:
   def __enter__(self):
     # Build os.environ defaults.
