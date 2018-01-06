@@ -2,7 +2,7 @@ import argparse
 from .context import stack_convert
 from stack_convert import Parser
 import logging
-import yaml
+import pyaml
 
 class Convert:
   """Orchestrates Parsing/Collapsing of stack data and emitting in JSON format
@@ -25,7 +25,7 @@ class Convert:
 
 class LoggingConfig:
   def __enter__(self, filename="log_config.yaml"):
-    logging.config.dictConfig( yaml.load(filename))
+    logging.config.dictConfig( pyaml.load(filename))
   def __exit__(self, *exc):
     logging.shutdown()
 
