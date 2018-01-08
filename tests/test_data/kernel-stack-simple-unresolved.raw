@@ -1,0 +1,10 @@
+
+              dtrace`dtrace_probe+0xef0
+              dtrace`dtrace_probe+0xee8
+              0x10401b18
+              genunix`exec_common+0x604
+              genunix`exece+0x5c
+              unix`syscall_trap+0x228
+               18
+
+
