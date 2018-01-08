@@ -1,0 +1,23 @@
+version: 1
+handlers:
+  console:
+    class: logging.StreamHandler
+    stream: ext://sys.stdout
+    formatter: basic
+  console_stderr:
+    class: logging.StreamHandler
+    stream: ext://sys.stderr
+    formatter: basic
+    filters: [single_level_filter]
+formatters:
+  basic:
+    style: "{"
+    format: "{levelname:s}:{name:s}:{message:s}"
+loggers:
+  verbose:
+    handlers: [console]
+    level: DEBUG
+filters:
+  single_level_filter:
+    (): filters.SingleLevelFilter
+root:
