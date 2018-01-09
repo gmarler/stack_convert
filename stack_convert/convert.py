@@ -1,5 +1,4 @@
 import argparse
-from .context import stack_convert
 from stack_convert import Parser
 import logging
 import pyaml
@@ -7,8 +6,8 @@ import pyaml
 class Convert:
   """Orchestrates Parsing/Collapsing of stack data and emitting in JSON format
   """
-  def __init__(self):
-    pass
+  def __init__(self, config):
+    self.config = config
 
   def run(self):
     self.stackparser = Parser()

@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+
+import stack_convert
+
+if __name__ == "__main__":
+  with stack_convert.convert.ApplicationConfig() as config:
+    converter = stack_convert.Convert( config )
+    converter.run()
