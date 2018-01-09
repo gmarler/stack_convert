@@ -49,8 +49,9 @@ def test_unresolved_address_parse(datafiles):
    parser = Parser()
    profile = parser.parseDTrace(str(datafile))
    #print(profile)
-   # TODO: now that you've parsed the data, look for a Node with name "0x10401b18"
-   parser.serializeProfile()
+   # Now that we've parsed the data, look for a Node with name "0x10401b18"
+   serialized = parser.serializeProfile()
+   assert serialized['children'][0]['children'][0]['children'][0]['children'][0]['name'] == "0x10401b18"
    json_data = parser.encodeAsJSON()
    #assert json_data == kernel_stack_simple_json
    #print(json_data)
