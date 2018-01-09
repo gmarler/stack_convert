@@ -29,7 +29,7 @@ def test_simple_DTrace_parse(datafiles,kernel_stack_simple_json):
    parser.serializeProfile()
    json_data = parser.encodeAsJSON()
    #assert json_data == kernel_stack_simple_json
-   print(json_data)
+   # print(json_data)
    # TODO: Convert back to a data structure and compare again
    # import json
    # json_string = str(kernel_stack_simple_json)
@@ -37,3 +37,20 @@ def test_simple_DTrace_parse(datafiles,kernel_stack_simple_json):
    # expected_data = json.JSONDecoder.decode(json_string)
    # actual_data = json.JSONDecoder.decode(json_data)
    # assert actual_data == expected_data
+
+@pytest.mark.datafiles(
+  os.path.join(FIXTURE_DIR, 'kernel-stack-simple-unresolved.raw'),
+)
+def test_unresolved_address_parse(datafiles):
+  path = str(datafiles)
+  assert(datafiles / 'kernel-stack-simple-unresolved.raw').check(file=1)
+
+  for datafile in datafiles.listdir():
+   parser = Parser()
+   profile = parser.parseDTrace(str(datafile))
+   #print(profile)
+   # TODO: now that you've parsed the data, look for a Node with name "0x10401b18"
+   parser.serializeProfile()
+   json_data = parser.encodeAsJSON()
+   #assert json_data == kernel_stack_simple_json
+   #print(json_data)
