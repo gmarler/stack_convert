@@ -14,7 +14,7 @@ class Node:
 
     if (frames and len(frames) > 0):
       head = frames[0]
-      child = self.children[head] if (self.children and self.children[head]) else None
+      child = self.children[head] if (self.children and head in self.children) else None
       if (child is None):
         child = Node(head)
         self.children[head] = child
