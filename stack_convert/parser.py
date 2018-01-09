@@ -72,7 +72,7 @@ class Parser:
         frame = self._frame_parse(line)
         if frame is not None:
           # Make sure this is a recognizable frame
-          if not re.search(r"^(\S+)`(\S+)$", frame):
+          if not re.search(r"^(\S+)`(\S+)|0x[\da-f]+$", frame):
             self.logger.warn("UNKNOWN LINE IN OPEN STACK: %s", frame)
             continue
           self.profile.addFrame(frame, None)
