@@ -107,7 +107,18 @@ class Parser:
     # Look for a plain unadorned stack frame
     #     This will take the form of an unresolved hex address: 0x0123456789abcdef
     #     Or a resolved symbol + offset: genunix`cdev_ioctl+0x67
-    framem = re.search(r"^\s+?(0x[0-9a-f]+|\w+`\w+\+0x[0-9a-f]+)", text)
+    framem = re.search("""
+      ^\s+?                  # Possible whitespace
+      (                      #  What we want to capture
+         0x[0-9a-f]+ |       # Either an unresolved address
+         (?:\w+`)+?          # Or a resolved address with possible module prefix
+         \w+                 # Followed by the resolved name
+         (?:\+0x[0-9a-f]+)+? # and an optional offset into it
+      )
+      """,
+      text,
+      re.VERBOSE
+    )
     if framem:
       frame = framem.group(1)
       # Strip the frame down
