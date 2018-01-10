@@ -33,7 +33,7 @@ class Parser:
 
       # 1. Is there no open stack?
       if (not self.profile.stack_is_open):
-        # 2c. Skip comment lines
+        # 1c. Skip comment lines
         if re.search(r"^\s+?#", line):
           continue
         # Skip blank lines
@@ -42,7 +42,7 @@ class Parser:
         # This is likely identical - eliminate if so
         if re.search(r"^$", line):
           continue
-        # 2a. Look for just an execname
+        # 1a. Look for just an execname
         execm = re.search(r"^\s+?(\w+)$", line)
         if execm:
           execname = execm.group(1)
@@ -50,7 +50,7 @@ class Parser:
           self.profile.openStack(execname)
           # No frame to add yet - the next line should be the first frame
           continue
-        # 2b. Look for a plain unadorned stack frame
+        # 1b. Look for a plain unadorned stack frame
         #     This will take the form of an unresolved hex address: 0x0123456789abcdef
         #     Or a resolved symbol + offset: genunix`cdev_ioctl+0x67
         frame = self._frame_parse(line)

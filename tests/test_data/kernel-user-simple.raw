@@ -1,0 +1,14 @@
+
+2018 Jan 10 12:49:35 [1515606575634692355]
+PID:12361 1
+unix`run_interrupt_thread
+
+realfree+0x118
+_malloc_unlocked+0x25c
+malloc+0x48
+deflateInit2_+0x12c
+deflateInit_+0x20
+ztmgr_init_stream+0x80
+default_ztmgr_write+0x4
+            1
+
