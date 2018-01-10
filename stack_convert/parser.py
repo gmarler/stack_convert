@@ -34,16 +34,16 @@ class Parser:
       # 1. Is there no open stack?
       if (not self.profile.stack_is_open):
         # 1c. Skip comment lines
-        if re.search(r"^\s+?#", line):
+        if re.search(r"^(?:\s+)?#", line):
           continue
         # Skip blank lines
-        if re.search(r"^\s+?$", line):
+        if re.search(r"^(?:\s+)?$", line):
           continue
         # This is likely identical - eliminate if so
         if re.search(r"^$", line):
           continue
         # 1a. Look for just an execname
-        execm = re.search(r"^\s+?(\w+)$", line)
+        execm = re.search(r"^(?:\s+)?(\w+)$", line)
         if execm:
           execname = execm.group(1)
           self.logger.debug("OPENING STACK FOR EXECNAME: %s" % execname)
@@ -56,8 +56,8 @@ class Parser:
         frame = self._frame_parse(line)
         if frame is not None:
           # Make sure this is a recognizable frame
-          if not re.search(r"^(\S+)`(\S+)$", frame):
-            self.logger.warn("UNKNOWN LINE BETWEEN STACKS: %s", frame)
+          if not re.search(r"^\w+|0x[\da-f]+$", frame):
+            self.logger.warn("UNKNOWN LINE BETWEEN STACKS: %s" % frame)
             continue
             self.logger.debug("OPENING STACK FOR PLAIN FRAME: %s" % frame)
           self.profile.openStack(frame)
@@ -68,23 +68,23 @@ class Parser:
       # 2. There is a currently open stack
       #
       else:
-        # 2a. Add a new frame to the existing stack (factor out)
-        frame = self._frame_parse(line)
-        if frame is not None:
-          # Make sure this is a recognizable frame
-          if not re.search(r"^(\S+)`(\S+)|0x[\da-f]+$", frame):
-            self.logger.warn("UNKNOWN LINE IN OPEN STACK: %s", frame)
-            continue
-          self.profile.addFrame(frame, None)
-          continue
         # 2b. Find the count for the stack as a whole and close the stack
-        stackfreqm = re.search(r"^\s+?(\d+)$", line)
+        stackfreqm = re.search(r"^(?:\s+)?(\d+)$", line)
         if stackfreqm:
           count = stackfreqm.group(1)
           self.profile.closeStack(count)
           continue
+        # 2a. Add a new frame to the existing stack (factor out)
+        frame = self._frame_parse(line)
+        if frame is not None:
+          # Make sure this is a recognizable frame
+          if not re.search(r"^\w+|0x[\da-f]+$", frame):
+            self.logger.warn("UNKNOWN LINE IN OPEN STACK: %s", frame)
+            continue
+          self.profile.addFrame(frame, None)
+          continue
         # 2c. Detect the gap between a kernel/user stack, which we'll add as an '-' frame
-        gapm = re.search(r"^\s+?$", line)
+        gapm = re.search(r"^(?:\s+)?$", line)
         if gapm:
           self.logger.debug("GAP FRAME BETWEEN KERNEL/USER STACKS")
           self.profile.addFrame('-', None)
@@ -111,7 +111,7 @@ class Parser:
       ^(?:\s+)?              # Possible whitespace
       (                      #  What we want to capture
          0x[0-9a-f]+ |       # Either an unresolved address
-         (?:\w+`)?           # Or a resolved address with possible module prefix
+         (?:\w+`)?           # Or a resolved address with optional module prefix
          \w+                 # Followed by the resolved name
          (?:\+0x[0-9a-f]+)?  # and an optional offset into it
       )
