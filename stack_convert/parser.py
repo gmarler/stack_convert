@@ -20,11 +20,12 @@ class Parser:
       # Possible states:
       # 1. No open stack
       #    a. We'll open a stack for a particular execname, if one is present
-      #    b. We'll open a stack with no execname/header for the stack
-      #    c. We'll skip comments
-      #    d. Find an unknown construct, and note it on STDERR, but continue
-      #    e. We'll parse an epoch timestamp, if present (or will we?)
-      #    f. We'll parse a datetimestamp (or is that at each Profile?)
+      #    b. We'll open an unadorned stack (no header for the stack)
+      #    c. Or open a stack for a PID/TID variant of the header
+      #    d. We'll skip comments
+      #    e. Find an unknown construct, and note it on STDERR, but continue
+      #    f. We'll parse an epoch timestamp, if present (or will we?)
+      #    g. We'll parse a datetimestamp (or is that at each Profile?)
       # 2. The profile stack is already open, and we're either going to:
       #    a. Add a new frame to the stack
       #    b. Find the count for the stack as a whole and close the stack
@@ -32,8 +33,8 @@ class Parser:
       #    d. Find an unknown construct, and note it on STDERR, but continue
 
       # 1. Is there no open stack?
-      if (not self.profile.stack_is_open):
-        # 1c. Skip comment lines
+      if not self.profile.stack_is_open:
+        # 1d. Skip comment lines
         if re.search(r"^(?:\s+)?#", line):
           continue
         # Skip blank lines
@@ -41,6 +42,32 @@ class Parser:
           continue
         # This is likely identical - eliminate if so
         if re.search(r"^$", line):
+          continue
+        # 1g. Parse a datetimestamp variant
+        dtm = re.search(r"""
+          ^ \d{4} \s+             # Year
+            (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+            \s+
+            \d+ \s+               # Day of Month
+            \d{2}:\d{2}:\d{2} \s+ # HH:MM:SS
+            \[ \d+ \]             # Epoch secs
+          $
+          """,
+          line,
+          re.VERBOSE
+        )
+        if dtm:
+          # We'll handle these later, for now just skip them
+          continue
+        # 1c. Handle PID/TID header variant
+        pidtidm = re.search(r"^PID:(\d+)\s+(\d+)", line)
+        if pidtidm:
+          pid = pidtidm.group(1)
+          tid = pidtidm.group(2)
+          pid_tid_header = "%s/%s" % (pid, tid)
+          self.logger.debug("OPENING STACK FOR PID/TID VARIANT: %s" % pid_tid_header)
+          self.profile.openStack("PID_TID_PLACEHOLDER")
+          # No frame to add yet - the next line should be the first frame
           continue
         # 1a. Look for just an execname
         execm = re.search(r"^(?:\s+)?(\w+)$", line)
@@ -107,7 +134,7 @@ class Parser:
     # Look for a plain unadorned stack frame
     #     This will take the form of an unresolved hex address: 0x0123456789abcdef
     #     Or a resolved symbol + offset: genunix`cdev_ioctl+0x67
-    framem = re.search("""
+    framem = re.search(r"""
       ^(?:\s+)?              # Possible whitespace
       (                      #  What we want to capture
          0x[0-9a-f]+ |       # Either an unresolved address
