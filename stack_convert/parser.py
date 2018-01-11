@@ -148,7 +148,7 @@ class Parser:
     # Remove args from C++ function names
     text = re.sub(r'([^(]+?)[(].+$', r'\1', text)
     # Strip off initial base return types from functions
-    text = re.sub(r'^(?:int|void|char|unsigned|long|long long|bool|const)(?:(?:\s+)?(?:[*|&]+)?(?:\s+)?)?', '', text)
+    text = re.sub(r'^(?:int|void|char|unsigned|long|long long|bool|const|__type_[01])(?:(?:\s+)?(?:[*|&]+)?(?:\s+)?)?', '', text)
     #     This will take the form of an unresolved hex address: 0x0123456789abcdef
     #     Or a resolved symbol + offset: genunix`cdev_ioctl+0x67
     framem = re.search(
