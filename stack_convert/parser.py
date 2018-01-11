@@ -141,20 +141,28 @@ class Parser:
     # Strip offset into function
     text = re.sub(r'\+[^+]*$', '', text)
     # Remove everything up to the function name
-    text = re.sub(r'.+?(\S+[(])', r'\1', text)
+    #text = re.sub(r'.+?(\S+[(])', r'\1', text)
     # Remove args from C++ function names
-    text = re.sub(r'.+(::.*)[(<].*', r'\1', text)
+    #text = re.sub(r'.+(::.*)[(<].*', r'\1', text)
     # Look for a plain unadorned stack frame
+    # Remove args from C++ function names
+    text = re.sub(r'([^(]+?)[(].+$', r'\1', text)
+    # Strip off initial base return types from functions
+    text = re.sub(r'^(?:int|void|char|unsigned|long|long long|bool|const)(?:(?:\s+)?(?:[\*]+)?(?:\s+)?)?', '', text)
     #     This will take the form of an unresolved hex address: 0x0123456789abcdef
     #     Or a resolved symbol + offset: genunix`cdev_ioctl+0x67
-    framem = re.search(r"""
-      ^(?:\s+)?              # Possible whitespace
-      (                      #  What we want to capture
-         0x[0-9a-f]+ |       # Either an unresolved address
-         (?:\w+`)?           # Or a resolved address with optional module prefix
-         \w+                 # Followed by the resolved name
-         (?:\+0x[0-9a-f]+)?  # and an optional offset into it
-      )
+    framem = re.search(
+      # r"""
+      #   ^(?:\s+)?              # Possible whitespace
+      #   (                      #  What we want to capture
+      #      0x[0-9a-f]+ |       # Either an unresolved address
+      #      (?:\w+`)?           # Or a resolved address with optional module prefix
+      #      \w+                 # Followed by the resolved name
+      #      (?:\+0x[0-9a-f]+)?  # and an optional offset into it
+      #   )
+      # """,
+      r"""
+        (.+)
       """,
       text,
       re.VERBOSE
