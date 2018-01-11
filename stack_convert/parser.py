@@ -7,9 +7,10 @@ class Parser:
     self.logger = logging.getLogger(self.__class__.__qualname__)
     self.profile = None
 
-  def parseDTrace(self, filename):
+  def parseDTrace(self, filename, stackMax):
     self.logger.debug("Opening [{0}] for parsing".format(filename))
     fh = open(filename, "r")
+    stacksProcessed = 0
 
     # Open a new profile to contain everything in this file
     # Later, we'll have one of these per timestamp
@@ -57,7 +58,7 @@ class Parser:
           re.VERBOSE
         )
         if dtm:
-          # We'll handle these later, for now just skip them
+          # We'll handle datetimestamps later, for now just skip them
           continue
         # 1c. Handle PID/TID header variant
         pidtidm = re.search(r"^PID:(\d+)\s+(\d+)", line)
@@ -100,6 +101,9 @@ class Parser:
         if stackfreqm:
           count = stackfreqm.group(1)
           self.profile.closeStack(count)
+          stacksProcessed += 1
+          if stacksProcessed >= stackMax:
+            break
           continue
         # 2a. Add a new frame to the existing stack (factor out)
         frame = self._frame_parse(line)
@@ -131,6 +135,15 @@ class Parser:
     return encoded
 
   def _frame_parse(self, text):
+    # Try to strip the test down before parsing it further
+    # Strip leading whitespace
+    text = re.sub(r'^\s*', '', text)
+    # Strip offset into function
+    text = re.sub(r'\+[^+]*$', '', text)
+    # Remove everything up to the function name
+    text = re.sub(r'.+?(\S+[(])', r'\1', text)
+    # Remove args from C++ function names
+    text = re.sub(r'.+(::.*)[(<].*', r'\1', text)
     # Look for a plain unadorned stack frame
     #     This will take the form of an unresolved hex address: 0x0123456789abcdef
     #     Or a resolved symbol + offset: genunix`cdev_ioctl+0x67
@@ -148,13 +161,7 @@ class Parser:
     )
     if framem:
       frame = framem.group(1)
-      # Strip the frame down
-      # Strip leading whitespace
-      frame = re.sub(r'^\s*', '', frame)
-      # Strip offset into function
-      frame = re.sub(r'\+[^+]*$', '', frame)
-      # Remove args from C++ function names
-      frame = re.sub(r'.+(::.*)[(<].*', r'\1', frame)
+
       return frame
     else:
       return None

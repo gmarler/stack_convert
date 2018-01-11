@@ -11,7 +11,7 @@ class Convert:
 
   def run(self):
     self.stackparser = Parser()
-    self.stackparser.parseDTrace(self.config.inputFile)
+    self.stackparser.parseDTrace(self.config.inputFile, self.config.stackCount)
     self.stackparser.serializeProfile()
     json_data = self.stackparser.encodeAsJSON()
     print(json_data)
