@@ -36,6 +36,8 @@ class ApplicationConfig:
                            help="file containing raw stack data to parse")
     argparser.add_argument("-t", "--inputType", action="store", type=str, default="",
                            help="type of input data (selects correct parser)")
+    argparser.add_argument("-c", "--stackCount", action="store", type=int,
+                           help="number of stacks to process before exiting")
     namespace = argparser.parse_args()
     return namespace
 

@@ -154,7 +154,7 @@ class Parser:
       # Strip offset into function
       frame = re.sub(r'\+[^+]*$', '', frame)
       # Remove args from C++ function names
-      frame = re.sub(r'(::.*)[(<].*', r'\1', frame)
+      frame = re.sub(r'.+(::.*)[(<].*', r'\1', frame)
       return frame
     else:
       return None
