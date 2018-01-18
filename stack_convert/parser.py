@@ -7,7 +7,7 @@ class Parser:
     self.logger = logging.getLogger(self.__class__.__qualname__)
     self.profile = None
 
-  def parseDTrace(self, filename, stackMax):
+  def parseDTrace(self, filename, stackMax=None):
     self.logger.debug("Opening [{0}] for parsing".format(filename))
     fh = open(filename, "r")
     stacksProcessed = 0
@@ -102,7 +102,7 @@ class Parser:
           count = stackfreqm.group(1)
           self.profile.closeStack(count)
           stacksProcessed += 1
-          if stacksProcessed >= stackMax:
+          if stackMax and stacksProcessed >= stackMax:
             break
           continue
         # 2a. Add a new frame to the existing stack (factor out)
@@ -148,7 +148,7 @@ class Parser:
     # Remove args from C++ function names
     text = re.sub(r'([^(]+?)[(].+$', r'\1', text)
     # Strip off initial base return types from functions
-    text = re.sub(r'^(?:int|void|char|unsigned|long|long long|bool|const|__type_[01])(?:(?:\s+)?(?:[*|&]+)?(?:\s+)?)?', '', text)
+    text = re.sub(r'^(?:unsigned\s+)?(?:int|void|char|unsigned|double|long|long long|bool|const|__type_[01])(?:(?:\s+)?(?:[*|&]+)?(?:\s+)?)?', '', text)
     #     This will take the form of an unresolved hex address: 0x0123456789abcdef
     #     Or a resolved symbol + offset: genunix`cdev_ioctl+0x67
     framem = re.search(

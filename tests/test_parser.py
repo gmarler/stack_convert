@@ -9,6 +9,15 @@ FIXTURE_DIR = os.path.join(
   'test_data',
 )
 
+# Get the function name from stack frame framedepth of serialized
+def frame_x_funcname(serialized, framedepth):
+  if framedepth == 0:
+    return serialized[0]['name']
+  current = serialized
+  for i in range(0, framedepth):
+    current = current['children'][0]
+  return current['name']
+
 @pytest.fixture()
 def kernel_stack_simple_json():
   return r'{"children": [{"children": [{"children": [{"children": [{"name": "unix`mach_cpu_idle", "value": 19199}], "name": "unix`cpu_idle", "value": 19199}], "name": "unix`idle", "value": 19199}], "name": "unix`thread_start", "value": 19199}], "name": "root", "value": 19199}'
@@ -55,3 +64,32 @@ def test_unresolved_address_parse(datafiles):
    json_data = parser.encodeAsJSON()
    #assert json_data == kernel_stack_simple_json
    #print(json_data)
+
+@pytest.mark.datafiles(
+  os.path.join(FIXTURE_DIR, 'user-return-removal.raw'),
+)
+def test_user_return_removal(datafiles):
+  path = str(datafiles)
+  assert(datafiles / 'user-return-removal.raw').check(file=1)
+
+  expected_funcnames = [
+    'BloombergLP::bdlb::NullableValue<bool>::makeValue<bool>',
+    'js::Invoke',
+    'bsl::map<BloombergLP::bdlt::Date,double,std::less<BloombergLP::bdlt::Date>,bsl::allocator<bsl::pair<const BloombergLP::bdlt::Date,double> > >::operator[]',
+    'double_to_decimal',
+    'UTC',
+  ]
+
+  for datafile in datafiles.listdir():
+   parser = Parser()
+   profile = parser.parseDTrace(str(datafile))
+   #print(profile)
+   # Now that we've parsed the data, look for each Node to have had their return type removed,
+   # but the function name properly kept
+   serialized = parser.serializeProfile()
+   # assert serialized['children'][0]['children'][0]['children'][0]['children'][0]['name'] == "0x10401b18"
+   # print(frame_x_funcname(serialized, 1))
+   # assert serialized['children'][0]['name'] == 'BloombergLP::bdlb::NullableValue<bool>::makeValue<bool>'
+   assert frame_x_funcname(serialized, 1) == 'BloombergLP::bdlb::NullableValue<bool>::makeValue<bool>'
+   for stackdepth in (1, 5):
+     assert frame_x_funcname(serialized, stackdepth) == expected_funcnames[stackdepth - 1]

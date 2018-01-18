@@ -1,0 +1,64 @@
+# Variants:
+# unsigned
+# unsigned __unnamed_WameK4wvNaE$A::formKey(char*,const char*,const
+# unsigned char
+# unsigned char*
+# unsigned long
+# unsigned long long
+# unsigned short
+# unsigned short*
+# unsigned&
+# unsigned*
+# const
+# const char*
+# const unsigned char*
+# const unsigned short*
+# void
+# void*
+# void*&
+# void**
+# short
+# short*
+# int&
+# int*
+# float
+# double
+# double&
+# bool
+# bool&
+
+
+2018 Jan 11 09:00:46 [1515679246405431015]
+PID:30955 1
+unix`run_interrupt_thread
+
+unsigned js::gc::GetGCKindSlots(js::gc::FinalizeKind)+0x38
+unsigned char BloombergLP::irmmkt::TaggedDataParser::getBoolean(td_field_id_list_t)+0x14
+unsigned char*BloombergLP::gpgutl::BlpCompressor::compressData(unsigned char*,int,int&)+0x1e4
+unsigned long xercesc_2_8::XMLReader::charsLeftInBuffer()const+0xc
+unsigned long long BloombergLP::bdlt::Datetime::microsecondsFromEpoch()const+0x4c
+unsigned short BloombergLP::l_fcusec::ObjectId::exchangeByte()const+0x4
+unsigned short*xercesc_2_8::IconvLCPTranscoder::transcode(const char*const,xercesc_2_8::MemoryManager*const)+0x80
+unsigned&BloombergLP::bscdbg::__unnamed_AAAAAkswLa0L0::getThreadStateKey()+0x3c
+unsigned*bsl::Vector_Imp<unsigned,bsl::allocator<unsigned> >::insert(const unsigned*,unsigned,const unsigned&)+0x248
+const BloombergLP::bcem_Aggregate BloombergLP::bcem_Aggregate::resize(int)const+0x74
+const char*__unnamed_WameKNkUPaUni::getTzId(bool*)+0x0
+const char*js_SaveScriptFilename(JSContext*,const char*)+0xcc
+const unsigned char*BloombergLP::read_repeat_counts(const unsigned char*,int*,int*,const char**)+0x54
+const unsigned short*xercesc_2_8::XMLAttr::getQName()const+0x40
+void MarkAndSweep(JSContext*,JSGCInvocationKind)+0xf0
+void*BloombergLP::a_bdema_GmallocAllocator::allocate(unsigned)+0x58
+void*operator new(unsigned)+0x24
+void*&bsl::Vector_ImpBase<void*>::at(unsigned)+0x3c
+void**bsl::Vector_Imp<void*,bsl::allocator<void*> >::insert(void*const*,unsigned,void*const&)+0x1c8
+short BloombergLP::yascalc::YASCore::loadSrc8Curve(int,int,SWAP_MARKET_TYPE,short,BloombergLP::yascalc::YASCurve&)+0x144
+short*bsl::Vector_Imp<short,bsl::allocator<short> >::insert(const short*,unsigned,const short&)+0x1c8
+int&bsl::map<int,int,std::less<int>,bsl::allocator<bsl::pair<const int,int> > >::operator[](const int&)+0x204
+int*bsl::Vector_Imp<int,bsl::allocator<int> >::insert(const int*,unsigned,const int&)+0x30
+float BloombergLP::s_taseqsvc::__unnamed_WameKBpuNaU0d::getDefaultTickSizeForCurrentSecurity(char*)+0x44
+double UTC(double,JSContext*)+0x30
+double_to_decimal+0xf8
+double&bsl::map<BloombergLP::bdlt::Date,double,std::less<BloombergLP::bdlt::Date>,bsl::allocator<bsl::pair<const BloombergLP::bdlt::Date,double> > >::operator[](const BloombergLP::bdlt::Date&)+0x204
+bool js::Invoke(JSContext*,const js::CallArgs&,unsigned)+0x298
+bool&BloombergLP::bdlb::NullableValue<bool>::makeValue<bool>(const __type_1&)+0x20
+            1234
