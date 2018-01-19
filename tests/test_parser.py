@@ -86,6 +86,22 @@ def test_user_return_removal(datafiles):
     'bsl::Vector_Imp<void*,bsl::allocator<void*> >::insert',
     'bsl::Vector_ImpBase<void*>::a',
     'operator new',
+    'BloombergLP::a_bdema_GmallocAllocator::allocate',
+    'MarkAndSweep',
+    'xercesc_2_8::XMLAttr::getQName',
+    'BloombergLP::read_repeat_counts',
+    'js_SaveScriptFilename',
+    '__unnamed_WameKNkUPaUni::getTzId',
+    'BloombergLP::bcem_Aggregate BloombergLP::bcem_Aggregate::resize',
+    'bsl::Vector_Imp<unsigned,bsl::allocator<unsigned> >::insert',
+    'BloombergLP::bscdbg::__unnamed_AAAAAkswLa0L0::getThreadStateKey',
+    'xercesc_2_8::IconvLCPTranscoder::transcode',
+    'BloombergLP::l_fcusec::ObjectId::exchangeByte',
+    'BloombergLP::bdlt::Datetime::microsecondsFromEpoch',
+    'xercesc_2_8::XMLReader::charsLeftInBuffer',
+    'BloombergLP::gpgutl::BlpCompressor::compressData',
+    'BloombergLP::irmmkt::TaggedDataParser::getBoolean',
+    'js::gc::GetGCKindSlots',
   ]
 
   for datafile in datafiles.listdir():
@@ -99,5 +115,5 @@ def test_user_return_removal(datafiles):
    # print(frame_x_funcname(serialized, 1))
    # assert serialized['children'][0]['name'] == 'BloombergLP::bdlb::NullableValue<bool>::makeValue<bool>'
    assert frame_x_funcname(serialized, 1) == 'BloombergLP::bdlb::NullableValue<bool>::makeValue<bool>'
-   for stackdepth in (1, 13):
+   for stackdepth in (1, len(expected_funcnames)):
      assert frame_x_funcname(serialized, stackdepth) == expected_funcnames[stackdepth - 1]
