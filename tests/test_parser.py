@@ -78,6 +78,14 @@ def test_user_return_removal(datafiles):
     'bsl::map<BloombergLP::bdlt::Date,double,std::less<BloombergLP::bdlt::Date>,bsl::allocator<bsl::pair<const BloombergLP::bdlt::Date,double> > >::operator[]',
     'double_to_decimal',
     'UTC',
+    'BloombergLP::s_taseqsvc::__unnamed_WameKBpuNaU0d::getDefaultTickSizeForCurrentSecurity',
+    'bsl::Vector_Imp<int,bsl::allocator<int> >::insert',
+    'bsl::map<int,int,std::less<int>,bsl::allocator<bsl::pair<const int,int> > >::operator[]',
+    'bsl::Vector_Imp<short,bsl::allocator<short> >::insert',
+    'BloombergLP::yascalc::YASCore::loadSrc8Curve',
+    'bsl::Vector_Imp<void*,bsl::allocator<void*> >::insert',
+    'bsl::Vector_ImpBase<void*>::a',
+    'operator new',
   ]
 
   for datafile in datafiles.listdir():
@@ -91,5 +99,5 @@ def test_user_return_removal(datafiles):
    # print(frame_x_funcname(serialized, 1))
    # assert serialized['children'][0]['name'] == 'BloombergLP::bdlb::NullableValue<bool>::makeValue<bool>'
    assert frame_x_funcname(serialized, 1) == 'BloombergLP::bdlb::NullableValue<bool>::makeValue<bool>'
-   for stackdepth in (1, 5):
+   for stackdepth in (1, 13):
      assert frame_x_funcname(serialized, stackdepth) == expected_funcnames[stackdepth - 1]
