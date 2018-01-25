@@ -38,6 +38,10 @@ class ApplicationConfig:
                            help="type of input data (selects correct parser)")
     argparser.add_argument("-c", "--stackCount", action="store", type=int,
                            help="number of stacks to process before exiting")
+    argparser.add_argument("-s", "--startTimeStamp", action="store", type=str,
+                           help="the YYYY-MM-DD HH:MM:SS timestamp to start parsing at")
+    argparser.add_argument("-e", "--endTimeStamp", action="store", type=str,
+                           help="the YYYY-MM-DD HH:MM:SS timestamp to end parsing at")
     namespace = argparser.parse_args()
     return namespace
 

@@ -7,7 +7,7 @@ class Parser:
     self.logger = logging.getLogger(self.__class__.__qualname__)
     self.profile = None
 
-  def parseDTrace(self, filename, stackMax=None):
+  def parseDTrace(self, filename, stackMax=None, startTimeStamp=None, endTimeStamp=None):
     self.logger.debug("Opening [{0}] for parsing".format(filename))
     fh = open(filename, "r")
     stacksProcessed = 0
